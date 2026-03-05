@@ -1,5 +1,6 @@
 import ProjectTag from "./ProjectTag";
 import Tools from "./Tools";
+import Cursor from "./Cursor.jsx";
 
 function Hero() {
   return (
@@ -62,6 +63,7 @@ function Hero() {
           logo={"framerLogo"}
           sequence={false}
         />
+      <Cursor/>
       </div>
     </>
   );
