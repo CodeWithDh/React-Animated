@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function Tools({ tilt, first, fimg, second, simg, third, timg }) {
+function Tools({ tilt, first, fimg, second, simg, third, timg, alt }) {
   const rotateYValue = tilt === "right" ? 22 : -22;
   if (tilt == "right") {
     var add = "items-start";
@@ -36,7 +36,19 @@ function Tools({ tilt, first, fimg, second, simg, third, timg }) {
             />
           )}
 
-          <h4 className="inline">{first}</h4>
+          <div className="group cursor-pointer">
+            <div className="overflow-hidden h-10 inline-block">
+              <div className="flex flex-col transition-transform duration-300 ease-in-out group-hover:-translate-y-10">
+                <span className="h-10 flex items-center justify-center">
+                  {first}
+                </span>
+
+                <span className="h-10 flex items-center justify-center">
+                  {alt[0]}
+                </span>
+              </div>
+            </div>
+          </div>
 
           {tilt === "left" && (
             <img
@@ -56,7 +68,19 @@ function Tools({ tilt, first, fimg, second, simg, third, timg }) {
             />
           )}
 
-          <h4 className="inline">{second}</h4>
+          <div className="group cursor-pointer">
+            <div className="overflow-hidden h-10 inline-block">
+              <div className="flex flex-col transition-transform duration-300 ease-in-out group-hover:-translate-y-10">
+                <span className="h-10 flex items-center justify-center">
+                  {second}
+                </span>
+
+                <span className="h-10 flex items-center justify-center">
+                  {alt[1]}
+                </span>
+              </div>
+            </div>
+          </div>
 
           {tilt === "left" && (
             <img
@@ -76,7 +100,19 @@ function Tools({ tilt, first, fimg, second, simg, third, timg }) {
             />
           )}
 
-          <h4 className="inline">{third}</h4>
+          <div className="group cursor-pointer">
+            <div className="overflow-hidden h-10 inline-block">
+              <div className="flex flex-col transition-transform duration-300 ease-in-out group-hover:-translate-y-10">
+                <span className="h-10 flex items-center justify-center">
+                  {third}
+                </span>
+
+                <span className="h-10 flex items-center justify-center">
+                  {alt[2]}
+                </span>
+              </div>
+            </div>
+          </div>
 
           {tilt === "left" && (
             <img

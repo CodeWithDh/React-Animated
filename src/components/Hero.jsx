@@ -34,6 +34,7 @@ function Hero() {
             simg={"framerLogo"}
             third={"Ai Tools"}
             timg={"gptLogo"}
+            alt={["Senior", "Expert", "Middle"]}
           />
           <div className="relative flex items-center justify-center bg-white/40 shadow-lg shadow-white/50 rounded-full  w-[20rem] z-10 translate-y-[-2rem]">
             <video
@@ -52,6 +53,7 @@ function Hero() {
             simg="xLogo"
             third="Telegram"
             timg="telegramLogo"
+            alt={["My Cases", "Shots", "Contact Me"]}
           />
         </div>
         <ProjectTag
