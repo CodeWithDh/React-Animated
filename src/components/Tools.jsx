@@ -25,7 +25,7 @@ function Tools({ tilt, first, fimg, second, simg, third, timg }) {
                      rounded-[28px]
                      border border-white/30
                      shadow-[0_60px_120px_rgba(0,0,0,0.25)]
-                     p-2 flex flex-col ${add} justify-center gap-4 text-lg `}
+                     p-2 flex flex-col ${add} justify-center gap-4 text-lg  [mask-image:linear-gradient(to_${tilt},black_60%,transparent)]`}
       >
         <div className="tool m-2 flex gap-4">
           {tilt !== "left" && (

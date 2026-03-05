@@ -18,7 +18,12 @@ function Hero() {
               for your <span className="block md:inline">project</span>
             </span>
           </h2>
-          <ProjectTag count={100} />
+          <ProjectTag
+            count={100}
+            details={"projects"}
+            logo={"figmaLogo"}
+            sequence={true}
+          />
         </div>
         <div className="flex justify-center">
           <Tools
@@ -49,6 +54,12 @@ function Hero() {
             timg="telegramLogo"
           />
         </div>
+        <ProjectTag
+          count={5}
+          details={"experience"}
+          logo={"framerLogo"}
+          sequence={false}
+        />
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-export default function ProjectTag({ count }) {
+export default function ProjectTag({ count, logo, sequence, details }) {
   const ref = useRef(null);
 
   const mouseX = useMotionValue(0);
@@ -65,16 +65,33 @@ export default function ProjectTag({ count }) {
         className="flex justify-between items-center 
         w-full max-w-[600px] mx-auto"
       >
-        <div className="w-[8rem] h-[5rem] pl-5 p-4 rounded-xl bg-white shadow-md">
-          <h3 className="text-xl">{count}+</h3>
-          <p className="text-sm text-gray-500">projects</p>
-        </div>
+        {!sequence ? (
+          <>
+            <img
+              src={`../assets/${logo}.png`}
+              alt="Figma Logo"
+              className="w-[4rem] h-[6rem] translate-x-[8rem] translate-y-[-1rem]"
+            />
 
-        <img
-          src="../assets/figmaLogo.png"
-          alt="Figma Logo"
-          className="w-[4rem] h-[6rem] translate-x-[8rem]"
-        />
+            <div className="w-[8rem] h-[5rem] pl-5 p-4 rounded-xl bg-white shadow-md translate-x-[5rem] translate-y-[-1rem]">
+              <h3 className="text-xl">{count}+</h3>
+              <p className="text-sm text-gray-500">projects</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="w-[8rem] h-[5rem] pl-5 p-4 rounded-xl bg-white shadow-md">
+              <h3 className="text-xl">{count}+</h3>
+              <p className="text-sm text-gray-500">projects</p>
+            </div>
+
+            <img
+              src={`../assets/${logo}.png`}
+              alt="Figma Logo"
+              className="w-[4rem] h-[6rem] translate-x-[8rem]"
+            />
+          </>
+        )}
       </motion.div>
     </div>
   );
