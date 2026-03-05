@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function ProjectTag({ count }) {
@@ -8,15 +8,15 @@ export default function ProjectTag({ count }) {
   const mouseY = useMotionValue(0);
 
   const smoothX = useSpring(mouseX, {
-    stiffness: 30, // ↓ slower movement
+    stiffness: 70, // ↓ slower movement
     damping: 50, // ↑ smoother / less jitter
-    mass: 1, // ↑ adds delay feeling
+    mass: 0.5, // ↑ adds delay feeling
   });
 
   const smoothY = useSpring(mouseY, {
-    stiffness: 30,
+    stiffness: 70,
     damping: 50,
-    mass: 1,
+    mass: 0.5,
   });
 
   const handleMouseMove = (e) => {
@@ -29,9 +29,28 @@ export default function ProjectTag({ count }) {
     const distanceX = e.clientX - centerX;
     const distanceY = e.clientY - centerY;
 
-    mouseX.set(distanceX * 0.02);
-    mouseY.set(distanceY * 0.02);
+    mouseX.set(distanceX * 0.05);
+    mouseY.set(distanceY * 0.05);
   };
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      // Center of window
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      const distanceX = e.clientX - centerX;
+      const distanceY = e.clientY - centerY;
+
+      mouseX.set(distanceX * 0.02);
+      mouseY.set(distanceY * 0.02);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [mouseX, mouseY]);
   return (
     <div
       className="translate-x-[-5.5rem] translate-y-[-2rem]"
@@ -40,8 +59,8 @@ export default function ProjectTag({ count }) {
     >
       <motion.div
         style={{
-          x: mouseX,
-          y: mouseY,
+          x: smoothX,
+          y: smoothY,
         }}
         className="flex justify-between items-center 
         w-full max-w-[600px] mx-auto"

@@ -23,9 +23,12 @@ function Hero() {
         <div className="flex justify-center">
           <Tools
             tilt={"left"}
-            first={"Figma"}
-            second={"Framer"}
-            third={"AI Tools"}
+            first={"figma"}
+            fimg={"figmaLogo"}
+            second={"framer"}
+            simg={"framerLogo"}
+            third={"Ai Tools"}
+            timg={"gptLogo"}
           />
           <div className="relative flex items-center justify-center bg-white/40 shadow-lg shadow-white/50 rounded-full  w-[20rem] z-10 translate-y-[-2rem]">
             <video
@@ -36,12 +39,15 @@ function Hero() {
               muted
             />
           </div>
-          {/* <Tools
-            tilt={"Right"}
-            first={"Behance"}
-            second={"Twiter"}
-            third={"Telegram"}
-          /> */}
+          <Tools
+            tilt="right"
+            first="Behance"
+            fimg="behanceLogo"
+            second="Twitter"
+            simg="xLogo"
+            third="Telegram"
+            timg="telegramLogo"
+          />
         </div>
       </div>
     </>
