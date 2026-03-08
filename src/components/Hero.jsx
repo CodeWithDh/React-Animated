@@ -63,7 +63,7 @@ function Hero() {
           logo={"framerLogo"}
           sequence={false}
         />
-      <Cursor/>
+        <Cursor />
       </div>
     </>
   );

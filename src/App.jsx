@@ -1,15 +1,17 @@
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
+import Slider from "./components/Slider.jsx";
 
 import "./App.css";
-import { Routes } from "react-router";
-import MouseReactiveBox from "./components/ProjectTag.jsx";
+import Ourclient from "./components/Ourclient.jsx";
 
 function App() {
   return (
     <>
       <Header />
       <Hero />
+      <Slider />
+      <Ourclient />
     </>
   );
 }

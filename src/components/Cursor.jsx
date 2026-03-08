@@ -42,8 +42,8 @@ export default function Cursor() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setHover(true)}
-      className="relative flex items-center justify-center translate-x-[32rem] translate-y-[-5rem]"
-      style={{ width: 280, height: 140 }}
+      className="relative flex items-center justify-center translate-x-[33rem] translate-y-[-2rem] "
+      style={{ width: 280, height: 1 }}
     >
       <motion.button
         style={{ x: smoothX, y: smoothY }}
@@ -62,7 +62,7 @@ export default function Cursor() {
 
           {/* WIPE */}
           <motion.span
-            className="absolute z-20 bg-yellow-500 rounded-full"
+            className="absolute z-20 bg-yellow-400 rounded-full"
             style={{
               width: "180%",
               height: "160%",
