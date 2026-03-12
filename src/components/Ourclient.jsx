@@ -4,7 +4,7 @@ import Slider from "./Slider";
 export default function Ourclient() {
   return (
     <>
-      <div className="relative w-full h-[15vh]">
+      <div className="relative w-full h-[15vh] ">
         <motion.svg
           viewBox="0 0 1440 200"
           className="absolute top-0 w-full"
@@ -27,7 +27,7 @@ export default function Ourclient() {
           <h2>Shivam</h2>
         </motion.svg>
       </div>
-      <div className="w-full h-[20rem] flex flex-col justify-center items-center  ">
+      <div className="w-full h-[20rem] my-16 flex flex-col justify-center items-center  ">
         <div className="flex flex-col items-center  gap-2">
           <img
             src="../assets/ClientIcon.png"
@@ -42,7 +42,6 @@ export default function Ourclient() {
             to craft their digital presence with clarity, empathy, and precision
           </span>
         </p>
-        <Slider />
       </div>
     </>
   );

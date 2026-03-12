@@ -10,8 +10,8 @@ function App() {
     <>
       <Header />
       <Hero />
-      <Slider />
       <Ourclient />
+      <Slider />
     </>
   );
 }
