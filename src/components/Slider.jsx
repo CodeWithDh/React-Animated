@@ -2,116 +2,126 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import "./Slider.css";
 
-const totalCards = 10;
-const cardsData = Array.from({ length: totalCards }).map((_, i) => ({
-  id: i + 1,
-}));
+const TOTAL_CARDS = 12;
+const SLOTS = 9;
 
-function getCardTransform(delta) {
-  // delta represents the exact step/distance from center (0).
-  const abs = Math.abs(delta);
-  const i = Math.floor(abs);
-  const progress = abs - i;
+/**
+ * TRUE CYLINDRICAL ARC — like a curved display monitor / theatre screen.
+ * Center card pushed deeper (Z_OFFSET), sides wrap toward viewer.
+ *   x = R · sin(θ)
+ *   z = Z_OFFSET + R · (1 − cos(θ))
+ *   rotateY = −θ  (each card faces the viewer)
+ */
+const R        = 620;
+const Z_OFFSET = -300;
+const ANGLES_DEG = [-90, -67, -45, -22, 0, 22, 45, 67, 90];
 
-  // Keyframes for the concave arc
-  const xBase = [0, 260, 460, 640, 800, 950, 1100];
-  const zBase = [0, -140, -280, -420, -560, -700, -850];
-  const ryBase = [0, -35, -50, -60, -70, -80, -90];
-  const sBase = [1, 0.92, 0.85, 0.8, 0.75, 0.6, 0.5];
-  const oBase = [1, 0.8, 0.55, 0.2, 0.0, 0.0, 0.0];
-
-  if (i >= xBase.length - 1) {
-    return { x: 0, z: -1000, ry: 0, scale: 0, opacity: 0, zIndex: 0 };
-  }
-
-  const x = gsap.utils.interpolate(xBase[i], xBase[i + 1], progress);
-  const z = gsap.utils.interpolate(zBase[i], zBase[i + 1], progress);
-  const ry = gsap.utils.interpolate(ryBase[i], ryBase[i + 1], progress);
-  const s = gsap.utils.interpolate(sBase[i], sBase[i + 1], progress);
-  const o = gsap.utils.interpolate(oBase[i], oBase[i + 1], progress);
-
-  const sign = delta < 0 ? -1 : 1;
-
+const ARC_SLOTS = ANGLES_DEG.map((deg) => {
+  const rad = (deg * Math.PI) / 180;
   return {
-    x: x * sign,
-    z: z, // z is intrinsically 0 or negative
-    ry: ry * sign, // rotate inward toward camera
-    scale: s,
-    opacity: o,
-    zIndex: 100 - Math.round(abs * 10),
+    x:       Math.round(R * Math.sin(rad)),
+    z:       Z_OFFSET + Math.round(R * (1 - Math.cos(rad))),
+    ry:      -deg,
+    scale:   1,
+    rz:      0,
+    opacity: Math.abs(deg) >= 80 ? 0.7 : 1,
   };
-}
+});
+
+const SLIDE_IMAGES = [
+  '/assets/slide1.webp',
+  '/assets/slide2.webp',
+  '/assets/slide3.webp',
+  '/assets/slide4.webp',
+  '/assets/slide5.webp',
+  '/assets/slide6.webp',
+];
+
+const CARD_DATA = Array.from({ length: TOTAL_CARDS }).map((_, i) => ({
+  id: i + 1,
+  img: SLIDE_IMAGES[i % SLIDE_IMAGES.length],
+}));
 
 export default function Slider() {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
   useEffect(() => {
-    // Initial static distribution
     cardsRef.current.forEach((card, idx) => {
-      let delta = idx;
-      delta = gsap.utils.wrap(-totalCards / 2, totalCards / 2, delta);
-      const { x, z, ry, scale, opacity, zIndex } = getCardTransform(delta);
+      const slot = ARC_SLOTS[idx % SLOTS];
       gsap.set(card, {
         xPercent: -50,
         yPercent: -50,
-        x,
-        z,
-        rotationY: ry,
-        scale,
-        opacity,
-        zIndex,
+        x: slot.x,
+        y: -20,
+        z: slot.z,
+        rotationY: slot.ry,
+        rotationZ: 0,
+        rotationX: -4,
+        scale: 1,
+        opacity: slot.opacity,
+        zIndex: Math.round((R - slot.z) / 10),
       });
     });
 
-    // Infinite Timeline for cycling
-    const state = { position: 0 };
-    const tl = gsap.to(state, {
-      position: totalCards,
-      duration: 20, // 20s as specified for smooth cinematic loop
-      ease: "linear",
+    const state = { offset: 0 };
+
+    gsap.to(state, {
+      offset: SLOTS,
+      duration: 22,
+      ease: "none",
       repeat: -1,
       onUpdate: () => {
         cardsRef.current.forEach((card, idx) => {
-          let delta = idx - state.position;
-          // keeps delta anchored between -5 and 5 roughly
-          delta = gsap.utils.wrap(-totalCards / 2, totalCards / 2, delta);
-          
-          const { x, z, ry, scale, opacity, zIndex } = getCardTransform(delta);
-          
-          // Use set instead of to because timeline interpolation is smooth via onUpdate linearly
+          let slotPos = ((idx - state.offset) % SLOTS + SLOTS) % SLOTS;
+
+          const slotIndex = Math.floor(slotPos);
+          const slotA = ARC_SLOTS[slotIndex];
+          const slotB = ARC_SLOTS[(slotIndex + 1) % SLOTS];
+          const frac  = slotPos - slotIndex;
+
+          const lerp = (a, b) => a + (b - a) * frac;
+
+          const x  = lerp(slotA.x,  slotB.x);
+          const z  = lerp(slotA.z,  slotB.z);
+          const ry = lerp(slotA.ry, slotB.ry);
+
+          const isWrapping   = slotIndex >= SLOTS - 1;
+          const finalOpacity = isWrapping ? 0 : lerp(slotA.opacity, slotB.opacity);
+
           gsap.set(card, {
             x,
+            y: -20,
             z,
             rotationY: ry,
-            scale,
-            opacity,
-            zIndex,
+            rotationZ: 0,
+            rotationX: -4,
+            scale: 1,
+            opacity: finalOpacity,
+            zIndex: Math.round((R - z) / 10),
           });
         });
       },
     });
 
-    return () => {
-      tl.kill();
-    };
+    return () => gsap.killTweensOf(state);
   }, []);
 
   return (
     <div className="slider-section">
       <div className="carousel-container" ref={containerRef}>
-        {cardsData.map((item, i) => (
+        {CARD_DATA.map((data, i) => (
           <div
-            key={item.id}
+            key={i}
             className="card-positioner"
             ref={(el) => (cardsRef.current[i] = el)}
           >
             <div className="card-content">
-              <div className="app-icon">
-                <img src={`https://picsum.photos/id/${item.id + 10}/64/64`} alt="App Icon" />
+              <div className="card-app-icon">
+                <img src={data.img} alt="icon" />
               </div>
-              <div className="app-mockup">
-                <img src={`https://picsum.photos/id/${item.id + 40}/280/400`} alt="App Mockup" />
+              <div className="card-mockup">
+                <img src={data.img} alt="App mockup" />
               </div>
             </div>
           </div>

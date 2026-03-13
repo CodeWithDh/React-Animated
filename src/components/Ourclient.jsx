@@ -27,8 +27,8 @@ export default function Ourclient() {
           <h2>Shivam</h2>
         </motion.svg>
       </div>
-      <div className="w-full h-[20rem] my-16 flex flex-col justify-center items-center  ">
-        <div className="flex flex-col items-center  gap-2">
+      <div className="w-full flex flex-col items-center my-16 gap-8">
+        <div className="flex flex-col items-center gap-2">
           <img
             src="../assets/ClientIcon.png"
             alt="Our Clients"
@@ -36,12 +36,16 @@ export default function Ourclient() {
           />
           <h3>Our Clients</h3>
         </div>
-        <p className="text-4xl px-8 w-[40rem] mt-8 text-center ">
+        <p className="text-4xl px-8 w-[40rem] text-center">
           <span className="text-blue-500 font-bold">Brands that trust me </span>
           <span className="">
             to craft their digital presence with clarity, empathy, and precision
           </span>
         </p>
+        {/* Slider section with its own height */}
+        <div className="w-full h-[28rem]">
+          <Slider />
+        </div>
       </div>
     </>
   );
